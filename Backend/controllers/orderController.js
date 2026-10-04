@@ -18,7 +18,6 @@ const placeOrder = async (req, res) => {
       address: req.body.address,
     });
     await newOrder.save();
-    await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
 
     const line_items = req.body.items.map((item) => ({
       price_data: {
@@ -48,6 +47,9 @@ const placeOrder = async (req, res) => {
       line_items: line_items,
       mode: "payment",
     });
+
+    // cart is cleared only after Stripe confirms payment (see verifyOrder)
+    await orderModel.findByIdAndUpdate(newOrder._id, { stripeSessionId: session.id });
 
     res.json({ success: true, session_url: session.url });
   } catch (error) {
@@ -110,16 +112,27 @@ const updateStatus = async (req, res) => {
   }
 };
 
+// Payment is confirmed with Stripe itself, not with the "success" flag from the client
 const verifyOrder = async (req, res) => {
   const { orderId, success } = req.body;
   try {
-    if (success === "true") {
-      await orderModel.findByIdAndUpdate(orderId, { payment: true });
-      res.json({ success: true, message: "Paid" });
-    } else {
-      await orderModel.findByIdAndDelete(orderId);
-      res.json({ success: false, message: "Not Paid" });
+    const order = await orderModel.findById(orderId);
+    if (!order || !order.stripeSessionId) {
+      return res.json({ success: false, message: "Order not found" });
     }
+
+    const session = await stripe.checkout.sessions.retrieve(order.stripeSessionId);
+    if (session.payment_status === "paid") {
+      await orderModel.findByIdAndUpdate(orderId, { payment: true });
+      await userModel.findByIdAndUpdate(order.userId, { cartData: {} });
+      return res.json({ success: true, message: "Paid" });
+    }
+
+    // user cancelled on Stripe checkout: drop the unpaid order
+    if (success === "false") {
+      await orderModel.findByIdAndDelete(orderId);
+    }
+    res.json({ success: false, message: "Not Paid" });
   } catch (error) {
     res.json({ success: false, message: "Not  Verified" });
   }
