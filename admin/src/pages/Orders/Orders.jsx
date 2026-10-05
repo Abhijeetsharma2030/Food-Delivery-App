@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./Orders.css";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -28,7 +28,7 @@ const Order = () => {
       } else {
         toast.error("Failed to update status");
       }
-    } catch (error) {
+    } catch {
       toast.error("Error updating status");
     }
   };

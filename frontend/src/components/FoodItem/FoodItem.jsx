@@ -2,6 +2,7 @@ import { useContext } from "react";
 import "./FoodItem.css";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../Context/StoreContext";
+import PropTypes from "prop-types";
 
 const FoodItem = ({ image, name, price, desc, id }) => {
   const { cartItems, addToCart, removeFromCart, url, currency } =
@@ -50,6 +51,14 @@ const FoodItem = ({ image, name, price, desc, id }) => {
       </div>
     </div>
   );
+};
+
+FoodItem.propTypes = {
+  image: PropTypes.string,
+  name: PropTypes.string,
+  price: PropTypes.number,
+  desc: PropTypes.string,
+  id: PropTypes.string,
 };
 
 export default FoodItem;

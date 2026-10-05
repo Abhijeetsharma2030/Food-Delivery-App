@@ -1,6 +1,7 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import './ExploreMenu.css'
 import { StoreContext } from '../../Context/StoreContext'
+import PropTypes from "prop-types";
 
 const ExploreMenu = ({category,setCategory}) => {
 
@@ -25,4 +26,9 @@ const ExploreMenu = ({category,setCategory}) => {
   )
 }
 
-export default ExploreMenu
+ExploreMenu.propTypes = {
+  category: PropTypes.string,
+  setCategory: PropTypes.func,
+};
+
+export default ExploreMenu;

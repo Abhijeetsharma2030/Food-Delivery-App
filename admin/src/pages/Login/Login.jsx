@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { url } from "../../assets/assets";
 import "./Login.css";
+import PropTypes from "prop-types";
 
 const Login = ({ onLogin }) => {
   const [data, setData] = useState({ email: "", password: "" });
@@ -50,6 +51,10 @@ const Login = ({ onLogin }) => {
       </form>
     </div>
   );
+};
+
+Login.propTypes = {
+  onLogin: PropTypes.func,
 };
 
 export default Login;

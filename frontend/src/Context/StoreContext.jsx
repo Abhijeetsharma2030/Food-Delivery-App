@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { menu_list } from "../assets/assets";
 import axios from "axios";
+import PropTypes from "prop-types";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
@@ -124,6 +125,10 @@ const StoreContextProvider = (props) => {
       {props.children}
     </StoreContext.Provider>
   );
+};
+
+StoreContextProvider.propTypes = {
+  children: PropTypes.node,
 };
 
 export default StoreContextProvider;

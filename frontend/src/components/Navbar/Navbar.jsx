@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import './Navbar.css'
 import { assets } from '../../assets/assets'
 import { Link, useNavigate } from 'react-router-dom'
 import { StoreContext } from '../../Context/StoreContext'
+import PropTypes from "prop-types";
 
 const Navbar = ({ setShowLogin }) => {
 
@@ -47,4 +48,8 @@ const Navbar = ({ setShowLogin }) => {
   )
 }
 
-export default Navbar
+Navbar.propTypes = {
+  setShowLogin: PropTypes.func,
+};
+
+export default Navbar;

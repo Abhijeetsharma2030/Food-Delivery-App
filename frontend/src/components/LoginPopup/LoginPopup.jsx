@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import "./LoginPopup.css";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../Context/StoreContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import PropTypes from "prop-types";
 
 const LoginPopup = ({ setShowLogin }) => {
   const { setToken, url, loadCartData } = useContext(StoreContext);
@@ -101,6 +102,10 @@ const LoginPopup = ({ setShowLogin }) => {
       </form>
     </div>
   );
+};
+
+LoginPopup.propTypes = {
+  setShowLogin: PropTypes.func,
 };
 
 export default LoginPopup;

@@ -1,5 +1,6 @@
 import "./Navbar.css";
 import { assets } from "../../assets/assets";
+import PropTypes from "prop-types";
 
 const Navbar = ({ onLogout }) => {
   return (
@@ -11,6 +12,10 @@ const Navbar = ({ onLogout }) => {
       </div>
     </div>
   );
+};
+
+Navbar.propTypes = {
+  onLogout: PropTypes.func,
 };
 
 export default Navbar;
